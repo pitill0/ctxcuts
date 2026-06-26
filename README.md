@@ -2,12 +2,15 @@
 
 Portable context shortcuts for AI agent workflows.
 
-`ctxcuts` is a tiny CLI that lets you define reusable context shortcuts like
-`:r`, `:f`, `:s` or `:a` and expand them into focused prompts for coding agents,
+`ctxcuts` is a tiny CLI for defining reusable context shortcuts like `:r`,
+`:f`, `:s` or `:a` and expanding them into focused prompts for coding agents,
 chat assistants, CLIs and custom workflows.
 
-The goal is simple: stop repeating long prompts and stop loading huge context
-files for every task. Load only the context you need, when you need it.
+The goal is simple: stop repeating long prompts, avoid oversized always-on
+context, and load only the task contract you need when you need it.
+
+Think of it as an `.editorconfig` for agent context: small, local-first,
+versionable and vendor-neutral.
 
 ```bash
 ctxc expand ":r src/player.py"
@@ -32,6 +35,36 @@ After:
 ```
 
 `ctxcuts` expands that tiny instruction into a reusable context contract.
+
+## See the context gain
+
+`ctxc stats` gives a lightweight estimate of how much reusable context is being
+loaded from a tiny shortcut invocation.
+
+```bash
+ctxc stats ":r src/ctxcuts/cli.py"
+```
+
+Example output:
+
+```text
+           ctxcuts stats
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━┓
+┃ Metric                   ┃ Value ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━┩
+│ Shortcut input tokens    │     7 │
+│ Expanded prompt tokens   │   113 │
+│ Reusable context tokens  │   106 │
+│ Typed portion            │    6% │
+│ Reusable context portion │   94% │
+│ Context budget           │   800 │
+│ Budget used              │   14% │
+└──────────────────────────┴───────┘
+```
+
+The estimate is intentionally simple. It is not a provider-specific billing
+calculator. The useful signal is that most of the prompt comes from reusable,
+versioned context instead of repeated manual typing.
 
 ## Install for local development
 
@@ -133,6 +166,29 @@ shortcuts:
     description: Review code or text without modifying it.
     mode: read_only
 ```
+
+## What ctxcuts saves
+
+`ctxcuts` is designed to reduce:
+
+- repeated typing
+- duplicated prompt boilerplate
+- oversized always-on context files
+- copy/paste drift between team members
+- unclear agent task modes
+
+It does not promise:
+
+- exact model-specific token counts
+- automatic billing reduction in every provider
+- autonomous agent orchestration
+- embeddings, memory or vector search
+- vendor-specific agent behavior
+
+If your tool sends the fully expanded prompt to a model, those tokens still
+exist. `ctxcuts` helps you keep that context focused, reusable and explicit.
+Provider-side caching or external context loading can produce additional
+savings, depending on the stack.
 
 ## Philosophy
 
