@@ -8,10 +8,10 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-from ctxcuts.config import CONFIG_DIR, ConfigError, load_config
+from ctxcuts.config import CONFIG_DIR, ConfigError, CtxcutsConfig, load_config
 from ctxcuts.defaults import DEFAULT_CONTEXTS, DEFAULT_SHORTCUTS_YML
-from ctxcuts.expand import expand_invocation
-from ctxcuts.tokens import estimate_savings, estimate_tokens
+from ctxcuts.expand import ExpandedPrompt, expand_invocation
+from ctxcuts.tokens import estimate_token_stats
 
 app = typer.Typer(help="Portable context shortcuts for AI agent workflows.")
 console = Console()
@@ -73,20 +73,34 @@ def stats(invocation: str = typer.Argument(..., help="Shortcut invocation.")) ->
     """Show a lightweight token estimate for an invocation."""
     config = _load_or_exit()
     expanded = _expand_or_exit(invocation, config)
+    token_stats = estimate_token_stats(invocation, expanded.content)
 
-    input_tokens = estimate_tokens(invocation)
-    expanded_tokens = estimate_tokens(expanded.content)
-    saving = estimate_savings(invocation, expanded.content)
+    budget_used = 0
+    if config.defaults.token_budget > 0:
+        budget_used = round(
+            (token_stats.expanded_prompt_tokens / config.defaults.token_budget) * 100
+        )
 
     table = Table(title="ctxcuts stats")
     table.add_column("Metric")
     table.add_column("Value", justify="right")
-    table.add_row("Shortcut input tokens", str(input_tokens))
-    table.add_row("Expanded prompt tokens", str(expanded_tokens))
+    table.add_row("Shortcut input tokens", str(token_stats.shortcut_input_tokens))
+    table.add_row("Expanded prompt tokens", str(token_stats.expanded_prompt_tokens))
+    table.add_row("Reusable context tokens", str(token_stats.reusable_context_tokens))
+    table.add_row("Typed portion", f"{token_stats.typed_ratio_percent}%")
+    table.add_row(
+        "Reusable context portion",
+        f"{token_stats.reusable_context_percent}%",
+    )
     table.add_row("Context budget", str(config.defaults.token_budget))
-    table.add_row("Budget used", f"{round((expanded_tokens / config.defaults.token_budget) * 100)}%")
-    table.add_row("Estimated typing/context reuse saving", f"~{saving}%")
+    table.add_row("Budget used", f"{budget_used}%")
     console.print(table)
+
+    console.print(
+        "\n[dim]Note: estimates use a simple chars/4 heuristic. "
+        "ctxcuts reduces repeated typing and keeps reusable context versioned; "
+        "actual model billing depends on the tool/provider and caching behavior.[/dim]"
+    )
 
 
 def _write_file(path: Path, content: str, *, force: bool) -> None:
@@ -97,7 +111,7 @@ def _write_file(path: Path, content: str, *, force: bool) -> None:
     console.print(f"[green]Wrote[/green] {path}")
 
 
-def _load_or_exit():  # noqa: ANN202 - Typer command helper exits process.
+def _load_or_exit() -> CtxcutsConfig:
     try:
         return load_config()
     except ConfigError as exc:
@@ -105,7 +119,10 @@ def _load_or_exit():  # noqa: ANN202 - Typer command helper exits process.
         raise typer.Exit(code=1) from exc
 
 
-def _expand_or_exit(invocation: str, config):  # noqa: ANN001, ANN202
+def _expand_or_exit(
+    invocation: str,
+    config: CtxcutsConfig,
+) -> ExpandedPrompt:
     try:
         return expand_invocation(invocation, config)
     except (ConfigError, ValueError) as exc:
