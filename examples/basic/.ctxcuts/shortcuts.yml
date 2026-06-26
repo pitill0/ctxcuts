@@ -1,0 +1,79 @@
+version: 1
+
+defaults:
+  prefix: ":"
+  output: markdown
+  token_budget: 800
+
+shortcuts:
+  r:
+    name: review
+    context: contexts/review.md
+    description: Review code or text without modifying it.
+    mode: read_only
+
+  f:
+    name: fix
+    context: contexts/fix.md
+    description: Fix a concrete issue with the smallest safe change.
+    mode: patch
+
+  t:
+    name: tests
+    context: contexts/tests.md
+    description: Work on tests, failures, coverage and regressions.
+    mode: test
+
+  d:
+    name: docs
+    context: contexts/docs.md
+    description: Improve or generate documentation.
+    mode: docs
+
+  s:
+    name: security
+    context: contexts/security.md
+    description: Look for security issues and unsafe assumptions.
+    mode: read_only
+
+  a:
+    name: audit
+    context: contexts/audit.md
+    description: Perform a structured audit and produce findings.
+    mode: read_only
+
+  q:
+    name: quality
+    context: contexts/quality.md
+    description: Improve maintainability, readability and long-term quality.
+    mode: advisory
+
+  p:
+    name: perf
+    context: contexts/perf.md
+    description: Analyze performance, latency, memory and bottlenecks.
+    mode: advisory
+
+  x:
+    name: explain
+    context: contexts/explain.md
+    description: Explain how something works before changing anything.
+    mode: read_only
+
+  m:
+    name: map
+    context: contexts/map.md
+    description: Build a compact map of a file, module or repo area.
+    mode: read_only
+
+  i:
+    name: investigate
+    context: contexts/investigate.md
+    description: Investigate an issue before proposing a fix.
+    mode: read_only
+
+  c:
+    name: commit
+    context: contexts/commit.md
+    description: Prepare a clean commit summary, diff review or changelog entry.
+    mode: write_text
