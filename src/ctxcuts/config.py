@@ -49,9 +49,7 @@ def find_project_root(start: Path | None = None) -> Path:
     for candidate in (current, *current.parents):
         if (candidate / CONFIG_DIR / CONFIG_FILE).exists():
             return candidate
-    raise ConfigError(
-        "Could not find .ctxcuts/shortcuts.yml. Run `ctxc init` first."
-    )
+    raise ConfigError("Could not find .ctxcuts/shortcuts.yml. Run `ctxc init` first.")
 
 
 def load_config(root: Path | None = None) -> CtxcutsConfig:
