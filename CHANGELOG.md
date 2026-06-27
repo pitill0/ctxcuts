@@ -10,21 +10,22 @@ release automation yet.
 
 ### Added
 
-- Added `ctxc show` to inspect shortcut metadata and context files.
-- Added `--root` / `-C` support to run commands against another project root.
-- Initial documentation polish for the first public-facing iteration.
-- Clearer explanation of reusable context gain in `ctxc stats`.
-- Honest scope notes about what ctxcuts saves and what it does not promise.
+- Nothing yet.
 
-## 0.1.0 - Planned
+## 0.1.0 - 2026-06-27
 
 ### Added
 
 - `ctxc init` to create a local `.ctxcuts/` directory.
 - `ctxc list` to show configured shortcuts.
+- `ctxc show` to inspect shortcut metadata and context files.
 - `ctxc expand` to expand shortcut invocations into focused prompts.
 - `ctxc stats` to estimate shortcut input, expanded prompt size and reusable
   context portion.
+- `--root` / `-C` support to run commands against another project root.
+- Initial documentation polish for the first public-facing iteration.
+- Clearer explanation of reusable context gain in `ctxc stats`.
+- Honest scope notes about what ctxcuts saves and what it does not promise.
 - Default shortcut set:
   - `:r` review
   - `:f` fix
