@@ -10,9 +10,18 @@ release automation yet.
 
 ### Added
 
-- Added default template variables with `{{ name | default: "value" }}`.
-- Added CI workflows for Gitea Actions and GitHub Actions.
 - Nothing yet.
+
+## 0.2.0 - 2026-06-27
+
+### Added
+
+- Added default template variables with `{{ name | default: "value" }}`.
+- Added support for rendering `target`, `focus`, `output`, `mode` and `shortcut`
+  values inside context files.
+- Updated the default context set to include reusable `Target`, `Focus` and
+  `Output` sections.
+- Added CI execution on all branches.
 
 ## 0.1.0 - 2026-06-27
 
