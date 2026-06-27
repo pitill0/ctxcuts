@@ -100,6 +100,15 @@ Expand a shortcut:
 ctxc expand ":r src/app.py"
 ```
 
+Copy an expanded prompt to the clipboard:
+
+```bash
+ctxc copy ":r src/app.py --focus security --var area=auth"
+```
+
+`copy` expands the invocation exactly like `ctxc expand`, then writes the expanded
+prompt to your system clipboard.
+
 Validate a `.ctxcuts/` setup:
 
 ```bash

@@ -9,6 +9,7 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
+from ctxcuts.clipboard import ClipboardError, copy_text
 from ctxcuts.config import CONFIG_DIR, ConfigError, CtxcutsConfig, Shortcut, load_config
 from ctxcuts.defaults import DEFAULT_CONTEXTS, DEFAULT_SHORTCUTS_YML
 from ctxcuts.doctor import run_doctor
@@ -80,6 +81,23 @@ def expand(
     config = _load_or_exit(root)
     expanded = _expand_or_exit(invocation, config)
     console.print(expanded.content)
+
+
+@app.command()
+def copy(
+    invocation: str = typer.Argument(..., help="Shortcut invocation."),
+    root: RootOption = None,
+) -> None:
+    config = _load_or_exit(root)
+    expanded = _expand_or_exit(invocation, config)
+
+    try:
+        copy_text(expanded.content)
+    except ClipboardError as exc:
+        error_console.print(f"[red]Error:[/red] {exc}")
+        raise typer.Exit(code=1) from exc
+
+    console.print("[green]Copied[/green] expanded prompt to clipboard.")
 
 
 @app.command()
