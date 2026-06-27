@@ -10,6 +10,7 @@ release automation yet.
 
 ### Added
 
+- Added default template variables with `{{ name | default: "value" }}`.
 - Added CI workflows for Gitea Actions and GitHub Actions.
 - Nothing yet.
 

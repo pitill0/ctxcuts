@@ -1,5 +1,9 @@
 # Investigate Mode
 
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "likely root causes and evidence" }}
+Output: {{ output | default: "hypotheses + next checks" }}
+
 You are investigating an issue before proposing a fix.
 
 Rules:

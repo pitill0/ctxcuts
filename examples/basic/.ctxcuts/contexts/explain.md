@@ -1,5 +1,9 @@
 # Explain Mode
 
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "how it works and why" }}
+Output: {{ output | default: "clear explanation" }}
+
 You are explaining how the target works before changing anything.
 
 Rules:

@@ -86,6 +86,10 @@ shortcuts:
 DEFAULT_CONTEXTS: dict[str, str] = {
     "review.md": """# Review Mode
 
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "bugs, regressions and edge cases" }}
+Output: {{ output | default: "summary + findings + recommendation" }}
+
 You are reviewing the target in read-only mode.
 
 Rules:
@@ -96,6 +100,10 @@ Rules:
 - End with a short recommendation.
 """,
     "fix.md": """# Fix Mode
+
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "root cause and smallest safe change" }}
+Output: {{ output | default: "patch plan + verification" }}
 
 You are fixing a specific issue.
 
@@ -108,6 +116,10 @@ Rules:
 """,
     "tests.md": """# Test Mode
 
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "failures, regressions and coverage gaps" }}
+Output: {{ output | default: "test plan + verification" }}
+
 You are working on tests.
 
 Rules:
@@ -118,6 +130,10 @@ Rules:
 """,
     "docs.md": """# Documentation Mode
 
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "clarity, examples and accuracy" }}
+Output: {{ output | default: "improved documentation" }}
+
 You are improving documentation.
 
 Rules:
@@ -127,6 +143,10 @@ Rules:
 - Preserve the existing tone of the project.
 """,
     "security.md": """# Security Mode
+
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "unsafe assumptions and attack surfaces" }}
+Output: {{ output | default: "findings with severity and fixes" }}
 
 You are reviewing the target from a security perspective.
 
@@ -140,6 +160,10 @@ Rules:
 """,
     "audit.md": """# Audit Mode
 
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "blockers, risks, improvements and notes" }}
+Output: {{ output | default: "prioritized audit findings" }}
+
 You are performing a structured audit.
 
 Rules:
@@ -150,6 +174,10 @@ Rules:
 - End with a prioritized action list.
 """,
     "quality.md": """# Quality Mode
+
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "maintainability, clarity and testability" }}
+Output: {{ output | default: "quality findings + small improvements" }}
 
 You are evaluating maintainability and long-term quality.
 
@@ -162,6 +190,10 @@ Rules:
 """,
     "perf.md": """# Performance Mode
 
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "latency, memory and unnecessary work" }}
+Output: {{ output | default: "performance findings + verification steps" }}
+
 You are analyzing performance.
 
 Rules:
@@ -172,6 +204,10 @@ Rules:
 - Suggest simple profiling or verification steps.
 """,
     "explain.md": """# Explain Mode
+
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "how it works and why" }}
+Output: {{ output | default: "clear explanation" }}
 
 You are explaining how the target works before changing anything.
 
@@ -184,6 +220,10 @@ Rules:
 """,
     "map.md": """# Map Mode
 
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "structure, responsibilities and relationships" }}
+Output: {{ output | default: "compact map" }}
+
 You are building a compact map of the target.
 
 Rules:
@@ -195,6 +235,10 @@ Rules:
 """,
     "investigate.md": """# Investigate Mode
 
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "likely root causes and evidence" }}
+Output: {{ output | default: "hypotheses + next checks" }}
+
 You are investigating an issue before proposing a fix.
 
 Rules:
@@ -205,6 +249,10 @@ Rules:
 - Only propose fixes after the likely root cause is clear.
 """,
     "commit.md": """# Commit Mode
+
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "user-visible changes and rationale" }}
+Output: {{ output | default: "commit message + summary" }}
 
 You are preparing commit-oriented text.
 

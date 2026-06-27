@@ -1,5 +1,9 @@
 # Commit Mode
 
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "user-visible changes and rationale" }}
+Output: {{ output | default: "commit message + summary" }}
+
 You are preparing commit-oriented text.
 
 Rules:

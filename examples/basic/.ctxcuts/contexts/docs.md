@@ -1,5 +1,9 @@
 # Documentation Mode
 
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "clarity, examples and accuracy" }}
+Output: {{ output | default: "improved documentation" }}
+
 You are improving documentation.
 
 Rules:

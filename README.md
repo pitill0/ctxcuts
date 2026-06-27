@@ -150,6 +150,35 @@ This is useful for examples, monorepos, wrapper scripts and tools that invoke
 | `:i` | investigate | Investigate an issue before proposing a fix |
 | `:c` | commit | Prepare commit summary, diff review or changelog entry |
 
+## Template variables
+
+Context files can use tiny built-in placeholders:
+
+```markdown
+Target: {{ target }}
+Focus: {{ focus | default: "bugs, regressions and edge cases" }}
+Output: {{ output | default: "summary + findings + recommendation" }}
+```
+
+Then pass values from the shortcut invocation:
+
+```bash
+ctxc expand ":r src/app.py --focus security --output checklist"
+```
+
+Supported variables include:
+
+| Variable | Meaning |
+| --- | --- |
+| `target` | Free-form target text after the shortcut |
+| `focus` | Value passed with `--focus` |
+| `output` | Value passed with `--output`, or the configured default output |
+| `mode` | Shortcut mode from `shortcuts.yml` |
+| `shortcut` | Shortcut name from `shortcuts.yml` |
+
+The renderer is intentionally tiny and dependency-free. It supports
+`{{ name }}` and `{{ name | default: "value" }}`. It is not Jinja.
+
 ## Config layout
 
 ```text

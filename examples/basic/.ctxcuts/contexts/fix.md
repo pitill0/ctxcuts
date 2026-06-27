@@ -1,5 +1,9 @@
 # Fix Mode
 
+Target: {{ target | default: "Not specified" }}
+Focus: {{ focus | default: "root cause and smallest safe change" }}
+Output: {{ output | default: "patch plan + verification" }}
+
 You are fixing a specific issue.
 
 Rules:
