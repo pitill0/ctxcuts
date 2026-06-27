@@ -10,7 +10,7 @@ release automation yet.
 
 ### Added
 
-- Nothing yet.
+- Added `ctxc doctor` to validate shortcut configuration and context files.\n- Nothing yet.
 
 ## 0.2.0 - 2026-06-27
 

@@ -11,6 +11,7 @@ from rich.table import Table
 
 from ctxcuts.config import CONFIG_DIR, ConfigError, CtxcutsConfig, Shortcut, load_config
 from ctxcuts.defaults import DEFAULT_CONTEXTS, DEFAULT_SHORTCUTS_YML
+from ctxcuts.doctor import run_doctor
 from ctxcuts.expand import ExpandedPrompt, expand_invocation
 from ctxcuts.tokens import estimate_token_stats
 
@@ -79,6 +80,25 @@ def expand(
     config = _load_or_exit(root)
     expanded = _expand_or_exit(invocation, config)
     console.print(expanded.content)
+
+
+@app.command()
+def doctor(root: RootOption = None) -> None:
+    config = _load_or_exit(root)
+    report = run_doctor(config)
+
+    table = Table(title="ctxcuts doctor")
+    table.add_column("Severity", style="bold")
+    table.add_column("Subject")
+    table.add_column("Message")
+
+    for issue in report.issues:
+        table.add_row(issue.severity, issue.subject, issue.message)
+
+    console.print(table)
+
+    if not report.ok:
+        raise typer.Exit(code=1)
 
 
 @app.command()

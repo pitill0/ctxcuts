@@ -98,6 +98,16 @@ Expand a shortcut:
 ctxc expand ":r src/app.py"
 ```
 
+Validate a `.ctxcuts/` setup:
+
+```bash
+ctxc doctor
+ctxc doctor --root examples/basic
+```
+
+`doctor` reports missing context files as errors and suspicious context issues
+as warnings.
+
 Show a shortcut context without expanding a full invocation:
 
 ```bash
