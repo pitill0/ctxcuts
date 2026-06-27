@@ -9,7 +9,7 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-from ctxcuts.config import CONFIG_DIR, ConfigError, CtxcutsConfig, load_config
+from ctxcuts.config import CONFIG_DIR, ConfigError, CtxcutsConfig, Shortcut, load_config
 from ctxcuts.defaults import DEFAULT_CONTEXTS, DEFAULT_SHORTCUTS_YML
 from ctxcuts.expand import ExpandedPrompt, expand_invocation
 from ctxcuts.tokens import estimate_token_stats
@@ -79,6 +79,60 @@ def expand(
     config = _load_or_exit(root)
     expanded = _expand_or_exit(invocation, config)
     console.print(expanded.content)
+
+
+@app.command()
+def show(
+    shortcut_id: str = typer.Argument(
+        ...,
+        help="Shortcut key or name, for example ':r', 'r' or 'review'.",
+    ),
+    root: RootOption = None,
+) -> None:
+    config = _load_or_exit(root)
+    shortcut = _resolve_shortcut_or_exit(shortcut_id, config)
+    context_path = config.root / CONFIG_DIR / shortcut.context
+
+    try:
+        context = context_path.read_text(encoding="utf-8")
+    except FileNotFoundError as exc:
+        error_console.print(f"[red]Error:[/red] Context file not found: {context_path}")
+        raise typer.Exit(code=1) from exc
+
+    table = Table(title=f"ctxcuts shortcut {config.defaults.prefix}{shortcut.key}")
+    table.add_column("Field", style="bold")
+    table.add_column("Value")
+    table.add_row("Name", shortcut.name)
+    table.add_row("Mode", shortcut.mode)
+    table.add_row("Context", str(context_path))
+    table.add_row("Description", shortcut.description)
+    console.print(table)
+    console.print()
+    console.print(context.rstrip())
+
+
+def _resolve_shortcut_or_exit(
+    shortcut_id: str,
+    config: CtxcutsConfig,
+) -> Shortcut:
+    normalized = shortcut_id.strip()
+    if normalized.startswith(config.defaults.prefix):
+        normalized = normalized[len(config.defaults.prefix) :]
+
+    if normalized in config.shortcuts:
+        return config.shortcuts[normalized]
+
+    for shortcut in config.shortcuts.values():
+        if shortcut.name == normalized:
+            return shortcut
+
+    available = ", ".join(
+        f"{config.defaults.prefix}{key}" for key in sorted(config.shortcuts)
+    )
+    error_console.print(
+        f"[red]Error:[/red] Unknown shortcut '{shortcut_id}'. Available: {available}"
+    )
+    raise typer.Exit(code=1)
 
 
 @app.command()

@@ -98,6 +98,14 @@ Expand a shortcut:
 ctxc expand ":r src/app.py"
 ```
 
+Show a shortcut context without expanding a full invocation:
+
+```bash
+ctxc show :r
+ctxc show review
+ctxc show --root examples/basic :s
+```
+
 Estimate token-ish savings:
 
 ```bash

@@ -10,6 +10,7 @@ release automation yet.
 
 ### Added
 
+- Added `ctxc show` to inspect shortcut metadata and context files.
 - Added `--root` / `-C` support to run commands against another project root.
 - Initial documentation polish for the first public-facing iteration.
 - Clearer explanation of reusable context gain in `ctxc stats`.
