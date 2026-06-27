@@ -12,6 +12,8 @@ context, and load only the task contract you need when you need it.
 Think of it as an `.editorconfig` for agent context: small, local-first,
 versionable and vendor-neutral.
 
+## Tiny example
+
 ```bash
 ctxc expand ":r src/player.py"
 ctxc expand ":s src/auth.py --focus input-validation"
