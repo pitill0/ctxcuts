@@ -112,6 +112,19 @@ ctxc expand ":r src/app.py" | claude
 ctxc expand ":r src/app.py" | aider
 ```
 
+## Working from another root
+
+Use `--root` when the `.ctxcuts/` directory lives somewhere else.
+
+```bash
+ctxc list --root examples/basic
+ctxc expand --root examples/basic ":r src/app.py"
+ctxc stats --root examples/basic ":r src/app.py"
+```
+
+This is useful for examples, monorepos, wrapper scripts and tools that invoke
+`ctxc` from a different working directory.
+
 ## Default shortcuts
 
 | Shortcut | Name | Purpose |
