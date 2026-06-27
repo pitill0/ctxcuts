@@ -186,6 +186,23 @@ Supported variables include:
 | `mode` | Shortcut mode from `shortcuts.yml` |
 | `shortcut` | Shortcut name from `shortcuts.yml` |
 
+Pass generic variables into a context:
+
+```bash
+ctxc expand ":r src/app.py --var area=auth --var risk=high"
+```
+
+Then use them in context files:
+
+```markdown
+Area: {{ area | default: "general" }}
+Risk: {{ risk | default: "unknown" }}
+```
+
+Generic variable names must start with a letter or underscore and may contain
+letters, numbers and underscores. Built-in variables such as `target`, `focus`,
+`output`, `mode` and `shortcut` cannot be overridden with `--var`.
+
 The renderer is intentionally tiny and dependency-free. It supports
 `{{ name }}` and `{{ name | default: "value" }}`. It is not Jinja.
 

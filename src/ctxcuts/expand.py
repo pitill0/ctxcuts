@@ -36,18 +36,19 @@ def expand_invocation(raw: str, config: CtxcutsConfig) -> ExpandedPrompt:
     focus = invocation.options.get("focus", "")
     output = invocation.options.get("output", config.defaults.output)
 
-    rendered_context = render_template(
-        context_text,
-        {
-            "target": invocation.target,
-            "focus": focus,
-            "output": output,
-            "mode": shortcut.mode,
-            "shortcut": shortcut.name,
-        },
-    )
+    template_values: dict[str, object] = {
+        **invocation.variables,
+        "target": invocation.target,
+        "focus": focus,
+        "output": output,
+        "mode": shortcut.mode,
+        "shortcut": shortcut.name,
+    }
+
+    rendered_context = render_template(context_text, template_values)
 
     option_lines = _format_options(invocation.options)
+    variable_lines = _format_variables(invocation.variables)
     target = invocation.target or "Not specified"
 
     content = f"""{rendered_context}
@@ -59,6 +60,7 @@ Mode: {shortcut.mode}
 Target: {target}
 Output: {output}
 {option_lines}
+{variable_lines}
 
 User request:
 {invocation.raw}
@@ -76,5 +78,14 @@ def _format_options(options: dict[str, str | bool]) -> str:
         return "Options: none"
     lines = ["Options:"]
     for key, value in sorted(options.items()):
+        lines.append(f"- {key}: {value}")
+    return "\n".join(lines)
+
+
+def _format_variables(variables: dict[str, str]) -> str:
+    if not variables:
+        return "Variables: none"
+    lines = ["Variables:"]
+    for key, value in sorted(variables.items()):
         lines.append(f"- {key}: {value}")
     return "\n".join(lines)

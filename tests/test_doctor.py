@@ -56,7 +56,9 @@ def test_doctor_reports_empty_context_as_warning(tmp_path: Path) -> None:
     assert "empty" in report.issues[0].message
 
 
-def test_doctor_reports_unknown_template_variable_as_warning(tmp_path: Path) -> None:
+def test_doctor_reports_runtime_variable_without_default_as_warning(
+    tmp_path: Path,
+) -> None:
     write_ctxcuts_config(tmp_path)
     (tmp_path / ".ctxcuts" / "contexts" / "review.md").write_text(
         "# Review\n\nProject: {{ project }}\n",
@@ -68,7 +70,23 @@ def test_doctor_reports_unknown_template_variable_as_warning(tmp_path: Path) -> 
 
     assert report.ok
     assert report.warning_count == 1
-    assert "Unknown template variable: project" in report.issues[0].message
+    assert (
+        "Runtime template variable `project` has no default" in report.issues[0].message
+    )
+
+
+def test_doctor_accepts_runtime_variable_with_default(tmp_path: Path) -> None:
+    write_ctxcuts_config(tmp_path)
+    (tmp_path / ".ctxcuts" / "contexts" / "review.md").write_text(
+        '# Review\n\nProject: {{ project | default: "general" }}\n',
+        encoding="utf-8",
+    )
+    config = load_config(tmp_path)
+
+    report = run_doctor(config)
+
+    assert report.ok
+    assert report.warning_count == 0
 
 
 def test_doctor_reports_unsupported_placeholder_as_warning(tmp_path: Path) -> None:

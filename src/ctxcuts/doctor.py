@@ -153,12 +153,15 @@ def _validate_placeholders(subject: str, context_text: str) -> list[DoctorIssue]
             )
             continue
 
-        if variable not in KNOWN_TEMPLATE_VARIABLES:
+        if variable not in KNOWN_TEMPLATE_VARIABLES and _has_no_default(body):
             issues.append(
                 DoctorIssue(
                     severity="warning",
                     subject=subject,
-                    message=f"Unknown template variable: {variable}",
+                    message=(
+                        f"Runtime template variable `{variable}` has no default. "
+                        "Pass it with `--var` or add a default value."
+                    ),
                 )
             )
 
@@ -174,3 +177,7 @@ def _extract_variable(body: str) -> str | None:
         return default_match.group("key")
 
     return None
+
+
+def _has_no_default(body: str) -> bool:
+    return _DEFAULT_PLACEHOLDER_PATTERN.match(body) is None

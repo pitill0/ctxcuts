@@ -10,7 +10,7 @@ release automation yet.
 
 ### Added
 
-- Added `ctxc doctor` to validate shortcut configuration and context files.\n- Nothing yet.
+- Added generic runtime variables with repeated `--var key=value` flags.\n- Added `ctxc doctor` to validate shortcut configuration and context files.\n- Nothing yet.
 
 ## 0.2.0 - 2026-06-27
 
