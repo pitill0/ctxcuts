@@ -10,6 +10,7 @@ release automation yet.
 
 ### Added
 
+- Added CI workflows for Gitea Actions and GitHub Actions.
 - Nothing yet.
 
 ## 0.1.0 - 2026-06-27

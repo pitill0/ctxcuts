@@ -211,6 +211,25 @@ exist. `ctxcuts` helps you keep that context focused, reusable and explicit.
 Provider-side caching or external context loading can produce additional
 savings, depending on the stack.
 
+## Continuous integration
+
+The repository includes CI workflows for both Gitea Actions and GitHub Actions:
+
+```text
+.gitea/workflows/ci.yml
+.github/workflows/ci.yml
+```
+
+Both workflows run the same checks:
+
+```bash
+uv run ruff format --check .
+uv run ruff check .
+uv run pytest
+uv run mypy src
+uv build
+```
+
 ## Philosophy
 
 `ctxcuts` is not an agent framework.
